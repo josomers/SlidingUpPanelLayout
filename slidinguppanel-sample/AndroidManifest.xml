@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="utf-8"?>
+<manifest xmlns:android="http://schemas.android.com/apk/res/android"
+          android:versionCode="2"
+          android:versionName="1.1"
+          package="com.slidinguppanel.demo">
+
+    <uses-sdk
+            android:minSdkVersion="8"
+            android:targetSdkVersion="16"/>
+
+    <application
+            android:allowBackup="true"
+            android:icon="@drawable/ic_launcher"
+            android:label="@string/tAppName"
+            android:theme="@style/SlidingUpPanelTheme">
+
+        <activity
+                android:label="@string/tAppName"
+                android:name=".activities.MainActivity">
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN"/>
+
+                <category android:name="android.intent.category.LAUNCHER"/>
+            </intent-filter>
+        </activity>
+
+        <activity
+                android:label="@string/tAppNameCustomButton"
+                android:name=".activities.CustomPanelButtonsActivity"/>
+
+        <activity
+                android:label="@string/tAppNameCustomTextViews"
+                android:name=".activities.CustomPanelTextViewsActivity"/>
+
+        <activity
+                android:label="@string/tAppNameFullscreen"
+                android:name=".activities.FullscreenActivity"/>
+
+    </application>
+
+</manifest>

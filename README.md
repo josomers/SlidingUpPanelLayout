@@ -1,35 +1,33 @@
 Android Sliding Up Panel
 =========================
 
-The 2.2 version of the [Umano](http://umanoapp.com) [Android app](https://play.google.com/store/apps/details?id=com.sothree.umano) features a sexy sliding up draggable panel for the currently playing article. This type of a panel is a common pattern also used in the Google Music app and the Rdio app. This is an open source implementation of this component that you are free to take advantage of in your apps. Umano Team <3 Open Source.
 
-As seen in Umano ([http://umanoapp.com](http://umanoapp.com)):
-
-![SlidingUpPanelLayout](https://raw.github.com/umano/AndroidSlidingUpPanelDemo/master/slidinguppanel.png)
+![SlidingUpPanelLayout](https://raw.github.com/josomers/SlidingUpPanelLayout/dev/slidinguppanel.png)
 
 Usage
 -----------
-To use the layout, simply include `com.sothree.slidinguppaneldemo.SlidingUpPanelLayout` as the Root element in your activity Layout. Make sure that it has two children. The first child is your main layout. The second child is your layout for the sliding up panel. Both children should have width and height set to `match_parent`. For more information, please refer to the sample code.
+To use the layout, simply include `com.slidinguppanel.SlidingUpPanelLayout` as the root element in your activity Layout. Make sure that it has two children. The first child is your main layout. The second child is your layout for the sliding up panel. Both children should have width and height set to `match_parent`. For more information, please refer to the sample code.
+
 ```xml
-    <com.sothree.slidinguppaneldemo.SlidingUpPanelLayout
-        android:id="@+id/sliding_layout"
+<com.slidinguppanel.SlidingUpPanelLayout
+    android:id="@+id/sliding_layout"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent" >
+
+    <TextView
         android:layout_width="match_parent"
-        android:layout_height="match_parent" >
+        android:layout_height="match_parent"
+        android:gravity="center"
+        android:text="Main Content"
+        android:textSize="16sp" />
 
-        <TextView
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:gravity="center"
-            android:text="Main Content"
-            android:textSize="16sp" />
-
-        <TextView
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:gravity="center|top"
-            android:text="The Awesome Sliding Up Panel"
-            android:textSize="16sp" />
-    </com.sothree.slidinguppaneldemo.SlidingUpPanelLayout>
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:gravity="center|top"
+        android:text="The Awesome Sliding Up Panel"
+        android:textSize="16sp" />
+</com.slidinguppanel.SlidingUpPanelLayout>
 ```
 For smooth interaction with the ActionBar, make sure that `windowActionBarOverlay` is set to `true` in your styles:
 ```xml
@@ -37,19 +35,23 @@ For smooth interaction with the ActionBar, make sure that `windowActionBarOverla
     <item name="android:windowActionBarOverlay">true</item>
 </style>
 ```
+
 Additional Features
 -----------
-You can restrict the drag area of the sliding panel to a specific view by using the `setDragView` method. Otherwise, the whole panel will be slideable and it will intercept all clicks.
+* `setDraggerView(View draggerView, int height)`    : Restric the drag area of the sliding panel to a specific view and height. Otherwise, the whole panel will be slidable and it will intercept all clicks.
+* `setDraggerHeight(int height)`                    : Change the dragger height
+* `setShadowDrawable(Drawable drawable)`            : Change the dragger shadow. No shadow displayed by default.
+* `setShadowDrawable(Drawable drawable, int height)`: Change the dragger shadow with a custom height. No shadow displayed by default.
+* `setContentHeight(int contentHeight)`             : Change the panel's content height to a custom one
+* `setMaxContentHeightRatio(float ratio)`           : When using a custom height you can define the max height ratio of the view. 2f/3 by default, use 1.0f for full screen height.
+* `collapse()` or `expand()`                        : Expand/Collapse the sliding panel
+* `setInterceptingPanelEvents(boolean interceptTap)`: When using a custom dragger view, it might be usefull to make some views in the dragger clickable.
 
-You can change the panel height by using the `setPanelHeight` method.
+Requirements
+-----------
+* Install the support-v4-r13.jar to your own artifact repo as it is not available in the Maven repo's.
+* Tested on Android 2.2+
 
-You can change the panel shadow by using the `setShadowDrawable` method. No shadow is displayed by default.
-Implementation
------------
-This code is heavily based on the opened-sourced [SlidingPaneLayout](http://developer.android.com/reference/android/support/v4/widget/SlidingPaneLayout.html) component from the r13 of the Android Support Library. Thanks Android team!
-Requrements
------------
-Tested on Android 2.2+
 Licence
 -----------
 Licensed under the Apache License, Version 2.0 (the "License");
@@ -63,3 +65,8 @@ distributed under the License is distributed on an "AS IS" BASIS,
 WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 See the License for the specific language governing permissions and
 limitations under the License.
+
+Credits
+-----------
+* All credits goes to the [Umano Team](http://umanoapp.com): for the idea and the basic, but awesome implementation of this layout.
+* This code is heavily based on the opened-sourced [SlidingPaneLayout](http://developer.android.com/reference/android/support/v4/widget/SlidingPaneLayout.html) component from the r13 of the Android Support Library. Thanks Android team!

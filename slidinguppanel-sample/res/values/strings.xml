@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <string name="tAppName">SlidingUpPanel Demo</string>
+    <string name="tAppNameFullscreen">Fullscreen Demo</string>
+    <string name="tAppNameCustomButton">Demo with Panel-Buttons</string>
+    <string name="tAppNameCustomTextViews">Demo with Panel-TextViews</string>
+    <string name="tSettings">Settings</string>
+
+    <string name="tButton1">MaxContentRadio = 1.0f</string>
+    <string name="tButton2">Height: 200</string>
+    <string name="tButton3">Height: 700</string>
+    <string name="tButton4">Reset MaxContentRatio</string>
+    <string name="tButton5">Reset ContentHeight</string>
+    <string name="tExpand">Expand</string>
+    <string name="tCollapse">Collapse</string>
+
+    <string name="tCredits">Brought to you by http://umanoapp.com</string>
+    <string name="tAwesome">The Awesome Sliding Up Panel</string>
+    <string name="tSmile">Cool story bro. Tell it again!</string>
+</resources>

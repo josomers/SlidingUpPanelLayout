@@ -1,0 +1,69 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xmlns="http://maven.apache.org/POM/4.0.0"
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
+    <modelVersion>4.0.0</modelVersion>
+
+    <parent>
+        <groupId>com.slidinguppanel</groupId>
+        <artifactId>slidinguppanel-parent</artifactId>
+        <version>1.1-SNAPSHOT</version>
+        <relativePath>../pom.xml</relativePath>
+    </parent>
+
+    <artifactId>slidinguppanel-sample</artifactId>
+    <packaging>apk</packaging>
+    <name>SlidingUpPanel - Sample</name>
+    <description>Sample application with a different implementations of the SlidingUpPanelLayout
+    </description>
+
+    <dependencies>
+        <dependency>
+            <groupId>junit</groupId>
+            <artifactId>junit</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>org.robolectric</groupId>
+            <artifactId>robolectric</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>com.google.android</groupId>
+            <artifactId>android</artifactId>
+            <scope>provided</scope>
+        </dependency>
+        <dependency>
+            <groupId>com.slidinguppanel</groupId>
+            <artifactId>slidinguppanel</artifactId>
+            <version>${project.version}</version>
+            <type>apklib</type>
+        </dependency>
+        <dependency>
+            <groupId>de.akquinet.android.androlog</groupId>
+            <artifactId>androlog</artifactId>
+        </dependency>
+    </dependencies>
+
+	<build>
+		<plugins>
+		    <plugin>
+				<artifactId>maven-compiler-plugin</artifactId>
+				<inherited>true</inherited>
+				<configuration>
+					<source>${java.version}</source>
+					<target>${java.version}</target>
+				</configuration>
+			</plugin>
+			<plugin>
+				<groupId>com.jayway.maven.plugins.android.generation2</groupId>
+				<artifactId>android-maven-plugin</artifactId>
+				<extensions>true</extensions>
+				<configuration>
+					<sdk>
+						<platform>${android.platform}</platform>
+					</sdk>
+				</configuration>
+			</plugin>
+		</plugins>
+	</build>
+
+</project>
