@@ -68,5 +68,9 @@ limitations under the License.
 
 Credits
 -----------
-* All credits goes to the [Umano Team](http://umanoapp.com): for the idea and the basic, but awesome implementation of this layout.
+* All credits goes to the [Umano Team](http://umanoapp.com): for the idea and the basic, but awesome implementation of this layout. You can see the original here: [AndroidSlidingUpPanel](https://github.com/umano/AndroidSlidingUpPanel/)
 * This code is heavily based on the opened-sourced [SlidingPaneLayout](http://developer.android.com/reference/android/support/v4/widget/SlidingPaneLayout.html) component from the r13 of the Android Support Library. Thanks Android team!
+
+=======
+
+[![Build Status](https://secure.travis-ci.org/josomers/AndroidSlidingUpPanel.png)](https://travis-ci.org/josomers/AndroidSlidingUpPanel)
