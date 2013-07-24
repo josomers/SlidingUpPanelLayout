@@ -1,4 +1,4 @@
-package com.slidinguppanel.test;
+package com.slidinguppanel;
 
 import android.content.Context;
 import android.view.View;

@@ -1,4 +1,4 @@
-package com.slidinguppanel.demo.test;
+package com.slidinguppanel;
 
 import com.slidinguppanel.demo.activities.MainActivity;
 
