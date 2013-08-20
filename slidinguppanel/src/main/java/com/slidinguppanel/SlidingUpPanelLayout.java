@@ -672,7 +672,7 @@ public class SlidingUpPanelLayout extends ViewGroup {
         if (mCanSlide && !lp.slideable && mSlidableView != null) {
             // Clip against the slider; no sense drawing what will immediately be covered.
             canvas.getClipBounds(mTmpRect);
-            mTmpRect.bottom = Math.min(mTmpRect.bottom, mSlidableView.getTop());
+            mTmpRect.bottom = Math.min(mTmpRect.bottom, mSlidableView.getTop()) + ((mDraggerView != null) ? mDraggerView.getPaddingTop() : 0);
             canvas.clipRect(mTmpRect);
 
             drawScrim = true;
