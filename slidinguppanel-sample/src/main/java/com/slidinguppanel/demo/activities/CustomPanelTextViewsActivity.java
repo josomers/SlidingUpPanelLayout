@@ -27,7 +27,7 @@ public class CustomPanelTextViewsActivity extends Activity {
         final View panel = findViewById(R.id.panel);
 
         final SlidingUpPanelLayout slidingUpPanelLayout = (SlidingUpPanelLayout) findViewById(R.id.slidinguppanel);
-        slidingUpPanelLayout.setInterceptingPanelEvents(false);
+        slidingUpPanelLayout.setInterceptingPanelEvents(true);
         slidingUpPanelLayout.setDraggerView(panel, getResources().getDimensionPixelSize(R.dimen.panel_height_custom));
         slidingUpPanelLayout.setShadowDrawable(getResources().getDrawable(R.drawable.above_shadow), 5);
         slidingUpPanelLayout.setMaxContentHeightRatio(1.0f);

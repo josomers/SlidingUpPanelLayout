@@ -31,7 +31,7 @@ public class CustomPanelButtonsActivity extends Activity {
         final LinearLayout panel = (LinearLayout) findViewById(R.id.panel);
 
         mSlidingUpPanelLayout = (SlidingUpPanelLayout) findViewById(R.id.slidinguppanel);
-        mSlidingUpPanelLayout.setInterceptingPanelEvents(false);
+        mSlidingUpPanelLayout.setInterceptingPanelEvents(true);
         mSlidingUpPanelLayout.setDraggerView(panel, getResources().getDimensionPixelSize(R.dimen.panel_height_custom));
         mSlidingUpPanelLayout.setShadowDrawable(getResources().getDrawable(R.drawable.above_shadow));
         mSlidingUpPanelLayout.setMaxContentHeightRatio(mDefaultRatio);

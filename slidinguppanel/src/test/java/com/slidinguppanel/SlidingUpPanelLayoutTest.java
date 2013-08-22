@@ -3,8 +3,6 @@ package com.slidinguppanel;
 import android.content.Context;
 import android.view.View;
 
-import com.slidinguppanel.SlidingUpPanelLayout;
-
 import org.junit.Before;
 import org.junit.Ignore;
 import org.junit.Test;
@@ -44,7 +42,7 @@ public class SlidingUpPanelLayoutTest {
         assertTrue(slidingUpPanelLayout.getVisibility() == View.VISIBLE);
         assertTrue(slidingUpPanelLayout.getMaxContentHeightRatio() == 2 / 3f);
         assertTrue(slidingUpPanelLayout.getContentHeight() == Integer.MAX_VALUE);
-        assertFalse(slidingUpPanelLayout.isInterceptingPanelEvents());
+        assertTrue(slidingUpPanelLayout.isInterceptingPanelEvents());
         assertTrue(slidingUpPanelLayout.getDraggerHeight() == 40);
         assertTrue(slidingUpPanelLayout.getTopDistance(0) == 0);
     }

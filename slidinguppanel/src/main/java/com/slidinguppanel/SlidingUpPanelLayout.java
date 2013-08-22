@@ -50,7 +50,7 @@ public class SlidingUpPanelLayout extends ViewGroup {
     /**
      * The default config for allowing tap event on dragger.
      */
-    private static final boolean DEFAULT_ALLOW_TAPEVENT = false;
+    private static final boolean DEFAULT_ALLOW_TAPEVENT = true;
     /**
      * The default max height ratio is set to 2/3rd of the screen height
      */
@@ -580,7 +580,7 @@ public class SlidingUpPanelLayout extends ViewGroup {
                 mInitialMotionY = y;
                 mDragViewHit = isDragViewHit((int) x, (int) y);
 
-                if (mDragViewHit && mInterceptPanelEvents) {
+                if (mDragViewHit && !mInterceptPanelEvents) {
                     interceptTap = true;
                 }
                 break;
