@@ -14,7 +14,6 @@ import android.support.v4.view.ViewCompat;
 import android.support.v4.widget.ViewDragHelper;
 import android.util.AttributeSet;
 import android.view.MotionEvent;
-import android.view.SoundEffectConstants;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.accessibility.AccessibilityEvent;
@@ -28,7 +27,6 @@ import java.util.concurrent.atomic.AtomicBoolean;
  * Time: 14:48
  */
 public class SlidingUpPanelLayout extends ViewGroup {
-
     /**
      * Default peeking out dragger height
      */
@@ -57,6 +55,10 @@ public class SlidingUpPanelLayout extends ViewGroup {
      * The default max height ratio is set to 2/3rd of the screen height
      */
     private static final float DEFAULT_MAX_HEIGHT_RATIO = 2.0f / 3;
+    /**
+     * The default for allowing action up events
+     */
+    private static final boolean DEFAULT_ACTION_UP_ALLOWED = false;
     /**
      * The paint used to dim the main layout when sliding
      */
@@ -104,6 +106,10 @@ public class SlidingUpPanelLayout extends ViewGroup {
      * range [0, 1] where 0 = expanded, 1 = collapsed.
      */
     private float mSlideOffset;
+    /**
+     *
+     */
+    private boolean mActionUpEnabled;
     /**
      * How far in pixels the slideable dragger may move.
      */
@@ -158,6 +164,7 @@ public class SlidingUpPanelLayout extends ViewGroup {
         mShadowHeight = DEFAULT_SHADOW_HEIGHT;
         mContentHeight = DEFAULT_CONTENT_HEIGHT;
         mInterceptPanelEvents = DEFAULT_ALLOW_TAPEVENT;
+        mActionUpEnabled = DEFAULT_ACTION_UP_ALLOWED;
         mSlideOffset = 1.0f;
 
         setWillNotDraw(false);
@@ -192,6 +199,8 @@ public class SlidingUpPanelLayout extends ViewGroup {
 
     /**
      * Get the draggerview height in pixels
+     *
+     * @return mDraggerHeight the height of the dragger
      */
     public int getDraggerHeight() {
         return mDraggerHeight;
@@ -205,6 +214,24 @@ public class SlidingUpPanelLayout extends ViewGroup {
     public void setDraggerHeight(int height) {
         mDraggerHeight = height;
         invalidate();
+    }
+
+    /**
+     * Action up event enabled or not
+     *
+     * @return mActionUpEnabled Boolean allow or not
+     */
+    public boolean isActionUpEnabled() {
+        return mActionUpEnabled;
+    }
+
+    /**
+     * Set the actionUpEnabled boolean value
+     *
+     * @param actionUpEnabled A boolean to allow / disallow action up events
+     */
+    public void setActionUpEnabled(boolean actionUpEnabled) {
+        this.mActionUpEnabled = actionUpEnabled;
     }
 
     /**
@@ -304,6 +331,15 @@ public class SlidingUpPanelLayout extends ViewGroup {
     public void setDraggerView(View draggerView, int height) {
         mDraggerView = draggerView;
         setDraggerHeight(height);
+    }
+
+    /**
+     * Get the draggable view. Return the panel if set, else return the whole slidable view.
+     *
+     * @return panel view
+     */
+    public View getDraggerView() {
+        return mDraggerView != null ? mDraggerView : mSlidableView;
     }
 
     /**
@@ -481,10 +517,6 @@ public class SlidingUpPanelLayout extends ViewGroup {
             nextYStart += child.getHeight();
         }
 
-        if (mFirstLayout) {
-            //updateObscuredViewVisibility();
-        }
-
         mFirstLayout = false;
     }
 
@@ -498,7 +530,7 @@ public class SlidingUpPanelLayout extends ViewGroup {
     }
 
     private boolean isDragViewHit(int x, int y) {
-        View v = mDraggerView != null ? mDraggerView : mSlidableView;
+        View v = getDraggerView();
         if (v == null) {
             return false;
         }
@@ -567,7 +599,6 @@ public class SlidingUpPanelLayout extends ViewGroup {
         }
 
         final boolean interceptForDrag = mDragViewHit && mDragHelper.shouldInterceptTouchEvent(motionEvent);
-
         return interceptForDrag || interceptTap;
     }
 
@@ -579,40 +610,32 @@ public class SlidingUpPanelLayout extends ViewGroup {
 
         mDragHelper.processTouchEvent(motionEvent);
 
-        final int action = motionEvent.getAction();
-        boolean wantTouchEvents = true;
+        final float x = motionEvent.getX();
+        final float y = motionEvent.getY();
+        final boolean isDragViewHit = isDragViewHit((int) x, (int) y);
 
-        switch (action & MotionEventCompat.ACTION_MASK) {
+        switch (motionEvent.getAction() & MotionEventCompat.ACTION_MASK) {
             case MotionEvent.ACTION_DOWN: {
-                final float x = motionEvent.getX();
-                final float y = motionEvent.getY();
                 mInitialMotionX = x;
                 mInitialMotionY = y;
-                break;
             }
-
             case MotionEvent.ACTION_UP: {
-                final float x = motionEvent.getX();
-                final float y = motionEvent.getY();
-                final float dx = x - mInitialMotionX;
-                final float dy = y - mInitialMotionY;
-                final int slop = mDragHelper.getTouchSlop();
-                if (dx * dx + dy * dy < slop * slop &&
-                        isDragViewHit((int) x, (int) y)) {
-                    View v = mDraggerView != null ? mDraggerView : mSlidableView;
-                    v.playSoundEffect(SoundEffectConstants.CLICK);
-                    if (!isExpanded()) {
-                        expand();
-                    } else {
-                        collapse();
+                if (isActionUpEnabled()) {
+                    final float dx = x - mInitialMotionX;
+                    final float dy = y - mInitialMotionY;
+                    final int slop = mDragHelper.getTouchSlop();
+                    if (dx * dx + dy * dy < slop * slop && isDragViewHit) {
+                        if (!isExpanded()) {
+                            expand();
+                        } else {
+                            collapse();
+                        }
                     }
-                    break;
                 }
-                break;
             }
         }
 
-        return wantTouchEvents;
+        return isDragViewHit || isExpanded();
     }
 
     /**
@@ -840,12 +863,12 @@ public class SlidingUpPanelLayout extends ViewGroup {
                     updateObscuredViewVisibility();
                     mPreservedExpandedState = true;
                     if (mPanelSlideListener != null) {
-                        mPanelSlideListener.onPanelExpanded(mSlidableView);
+                        mPanelSlideListener.onPanelExpanded(getDraggerView());
                     }
                 } else if (mIsCollapsed.compareAndSet(false, true)) {
                     mPreservedExpandedState = false;
                     if (mPanelSlideListener != null) {
-                        mPanelSlideListener.onPanelCollapsed(mSlidableView);
+                        mPanelSlideListener.onPanelCollapsed(getDraggerView());
                     }
                 }
 
@@ -866,7 +889,7 @@ public class SlidingUpPanelLayout extends ViewGroup {
             mSlideOffset = (float) (top - topBound) / mSlideRange;
 
             if (mPanelSlideListener != null) {
-                mPanelSlideListener.onPanelSlide(mSlidableView, mSlideOffset);
+                mPanelSlideListener.onPanelSlide(getDraggerView(), mSlideOffset);
             }
 
             invalidate();
