@@ -859,13 +859,13 @@ public class SlidingUpPanelLayout extends ViewGroup {
         @Override
         public void onViewDragStateChanged(int state) {
             if (mDragHelper.getViewDragState() == ViewDragHelper.STATE_IDLE) {
-                if (mIsCollapsed.compareAndSet(true, false)) {
+                if (isExpanded()) {
                     updateObscuredViewVisibility();
                     mPreservedExpandedState = true;
                     if (mPanelSlideListener != null) {
                         mPanelSlideListener.onPanelExpanded(getDraggerView());
                     }
-                } else if (mIsCollapsed.compareAndSet(false, true)) {
+                } else {
                     mPreservedExpandedState = false;
                     if (mPanelSlideListener != null) {
                         mPanelSlideListener.onPanelCollapsed(getDraggerView());
