@@ -7,7 +7,7 @@ import android.graphics.Paint;
 import android.graphics.PixelFormat;
 import android.graphics.Rect;
 import android.graphics.drawable.Drawable;
-import android.os.Parcel;
+import android.os.Bundle;
 import android.os.Parcelable;
 import android.support.v4.view.MotionEventCompat;
 import android.support.v4.view.ViewCompat;
@@ -779,19 +779,21 @@ public class SlidingUpPanelLayout extends ViewGroup {
 
     @Override
     protected Parcelable onSaveInstanceState() {
-        Parcelable superState = super.onSaveInstanceState();
-
-        SavedState savedState = new SavedState(superState);
-        savedState.isExpanded = isSlideable() ? isExpanded() : mPreservedExpandedState;
-
-        return savedState;
+        Bundle bundle = new Bundle();
+        bundle.putParcelable("instanceState", super.onSaveInstanceState());
+        bundle.putBoolean("isExpanded", isSlideable() ? isExpanded() : mPreservedExpandedState);
+        return bundle;
     }
 
     @Override
     protected void onRestoreInstanceState(Parcelable state) {
-        SavedState savedState = (SavedState) state;
-        super.onRestoreInstanceState(savedState.getSuperState());
-        mPreservedExpandedState = savedState.isExpanded;
+        if (state instanceof Bundle) {
+            Bundle bundle = (Bundle) state;
+            mPreservedExpandedState = bundle.getBoolean("isExpanded");
+            super.onRestoreInstanceState(bundle.getParcelable("instanceState"));
+        } else {
+            super.onRestoreInstanceState(state);
+        }
     }
 
     private static class LayoutParams extends ViewGroup.MarginLayoutParams {
@@ -820,20 +822,6 @@ public class SlidingUpPanelLayout extends ViewGroup {
             c.obtainStyledAttributes(attrs, ATTRS).recycle();
         }
 
-    }
-
-    private static class SavedState extends BaseSavedState {
-        private boolean isExpanded;
-
-        public SavedState(Parcelable superState) {
-            super(superState);
-        }
-
-        @Override
-        public void writeToParcel(Parcel out, int flags) {
-            super.writeToParcel(out, flags);
-            out.writeInt(isExpanded ? 1 : 0);
-        }
     }
 
     private class DragHelperCallback extends ViewDragHelper.Callback {
