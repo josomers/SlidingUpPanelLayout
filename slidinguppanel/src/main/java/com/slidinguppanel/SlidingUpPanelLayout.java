@@ -20,6 +20,14 @@ import android.view.accessibility.AccessibilityEvent;
 
 public class SlidingUpPanelLayout extends ViewGroup {
     /**
+     * Float for expanded state
+     */
+    public static final float EXPANDED = 0.f;
+    /**
+     * Float for collapsed state
+     */
+    public static final float COLLAPSED = 1.f;
+    /**
      * Default peeking out dragger height
      */
     private static final int DEFAULT_DRAGGER_HEIGHT = 40; // px;
@@ -475,7 +483,7 @@ public class SlidingUpPanelLayout extends ViewGroup {
         int nextYStart = yStart;
 
         if (mFirstLayout) {
-            mSlideOffset = mCanSlide && mPreservedExpandedState ? 0.f : 1.f;
+            mSlideOffset = mCanSlide && mPreservedExpandedState ? EXPANDED : COLLAPSED;
         }
 
         for (int i = 0; i < childCount; i++) {
@@ -631,7 +639,7 @@ public class SlidingUpPanelLayout extends ViewGroup {
      * @return true if the slidinguppanel was slideable and is now expanded/in the process of expanding
      */
     public boolean expand() {
-        if (mFirstLayout || smoothSlideTo(0.f)) {
+        if (mFirstLayout || smoothSlideTo(EXPANDED)) {
             mPreservedExpandedState = true;
             return true;
         }
@@ -645,7 +653,7 @@ public class SlidingUpPanelLayout extends ViewGroup {
      * @return true if the slidinguppanel was slideable and is now collapsed/in the process of collapsing
      */
     public boolean collapse() {
-        if (mFirstLayout || smoothSlideTo(1.f)) {
+        if (mFirstLayout || smoothSlideTo(COLLAPSED)) {
             mPreservedExpandedState = false;
             return true;
         }
@@ -658,7 +666,7 @@ public class SlidingUpPanelLayout extends ViewGroup {
      * @return true if the slidinguppanel is completely expanded
      */
     public boolean isExpanded() {
-        return mCanSlide && mSlideOffset == 0;
+        return mCanSlide && mSlideOffset == EXPANDED;
     }
 
     /**
@@ -789,6 +797,7 @@ public class SlidingUpPanelLayout extends ViewGroup {
         if (state instanceof Bundle) {
             Bundle bundle = (Bundle) state;
             mPreservedExpandedState = bundle.getBoolean("isExpanded");
+            mSlideOffset = mPreservedExpandedState ? EXPANDED : COLLAPSED;
             super.onRestoreInstanceState(bundle.getParcelable("instanceState"));
         } else {
             super.onRestoreInstanceState(state);
