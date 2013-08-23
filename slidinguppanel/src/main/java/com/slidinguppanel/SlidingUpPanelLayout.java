@@ -152,7 +152,6 @@ public class SlidingUpPanelLayout extends ViewGroup {
         mContentHeight = DEFAULT_CONTENT_HEIGHT;
         mInterceptPanelEvents = DEFAULT_ALLOW_TAPEVENT;
         mActionUpEnabled = DEFAULT_ACTION_UP_ALLOWED;
-        mSlideOffset = 1.0f;
 
         setWillNotDraw(false);
 
