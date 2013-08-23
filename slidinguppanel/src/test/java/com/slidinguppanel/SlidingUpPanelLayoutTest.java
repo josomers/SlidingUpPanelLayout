@@ -17,7 +17,7 @@ import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertTrue;
 
 /**
- * User: josomers
+ * @author : Jo Somers
  * Date: 22/07/13
  * Time: 16:48
  */
@@ -45,6 +45,7 @@ public class SlidingUpPanelLayoutTest {
         assertTrue(slidingUpPanelLayout.isInterceptingPanelEvents());
         assertTrue(slidingUpPanelLayout.getDraggerHeight() == 40);
         assertTrue(slidingUpPanelLayout.getTopDistance(0) == 0);
+        assertFalse(slidingUpPanelLayout.isActionUpEnabled());
     }
 
     @Test
@@ -52,6 +53,9 @@ public class SlidingUpPanelLayoutTest {
         SlidingUpPanelLayout slidingUpPanelLayout = new SlidingUpPanelLayout(mContext);
         slidingUpPanelLayout.setDraggerView(new View(mContext), 300);
         assertEquals(slidingUpPanelLayout.getDraggerHeight(), 300);
+
+        slidingUpPanelLayout.setActionUpEnabled(true);
+        assertTrue(slidingUpPanelLayout.isActionUpEnabled());
     }
 
     /**
@@ -62,6 +66,7 @@ public class SlidingUpPanelLayoutTest {
     @Ignore
     @Test
     public void testExpand() {
+        // TODO
     }
 
     /**
@@ -72,6 +77,7 @@ public class SlidingUpPanelLayoutTest {
     @Ignore
     @Test
     public void testCollapse() {
+        //TODO
     }
 
 }

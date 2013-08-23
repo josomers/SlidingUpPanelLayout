@@ -18,14 +18,6 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.view.accessibility.AccessibilityEvent;
 
-import java.util.concurrent.atomic.AtomicBoolean;
-
-
-/**
- * User: josomers
- * Date: 15/07/13
- * Time: 14:48
- */
 public class SlidingUpPanelLayout extends ViewGroup {
     /**
      * Default peeking out dragger height
@@ -141,11 +133,6 @@ public class SlidingUpPanelLayout extends ViewGroup {
      */
     private boolean mPreservedExpandedState;
     private boolean mFirstLayout = true;
-
-    /**
-     * Stores collapsed/expanded state.
-     */
-    private AtomicBoolean mIsCollapsed = new AtomicBoolean(true);
 
     public SlidingUpPanelLayout(Context context) {
         this(context, null);
