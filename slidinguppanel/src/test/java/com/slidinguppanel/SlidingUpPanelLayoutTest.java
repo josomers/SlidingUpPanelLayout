@@ -37,7 +37,6 @@ public class SlidingUpPanelLayoutTest {
     public void testInitialConfiguration() {
         SlidingUpPanelLayout slidingUpPanelLayout = new SlidingUpPanelLayout(mContext);
         assertNotNull(slidingUpPanelLayout);
-        assertFalse(slidingUpPanelLayout.isExpanded());
         assertTrue(slidingUpPanelLayout.isSlideable());
         assertTrue(slidingUpPanelLayout.getVisibility() == View.VISIBLE);
         assertTrue(slidingUpPanelLayout.getMaxContentHeightRatio() == 2 / 3f);
