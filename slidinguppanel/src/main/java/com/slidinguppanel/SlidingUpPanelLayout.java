@@ -16,7 +16,6 @@ import android.util.AttributeSet;
 import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
-import android.view.accessibility.AccessibilityEvent;
 
 public class SlidingUpPanelLayout extends ViewGroup {
     /**
@@ -272,6 +271,7 @@ public class SlidingUpPanelLayout extends ViewGroup {
      */
     public void setMaxContentHeightRatio(float ratio) {
         this.mMaxContentHeightRatio = ratio;
+        invalidate();
     }
 
     /**
@@ -290,13 +290,14 @@ public class SlidingUpPanelLayout extends ViewGroup {
      */
     public void setContentHeight(int contentHeight) {
         this.mContentHeight = contentHeight;
+        invalidate();
     }
 
     /**
      * Allow the user to reset the content to the default
      */
     public void resetContentHeight() {
-        this.mContentHeight = DEFAULT_CONTENT_HEIGHT;
+        setContentHeight(DEFAULT_CONTENT_HEIGHT);
     }
 
     /**
@@ -716,17 +717,16 @@ public class SlidingUpPanelLayout extends ViewGroup {
      */
     private boolean smoothSlideTo(float slideOffset) {
         if (!mCanSlide) {
-            // Nothing to do.
             return false;
         }
 
         int y = (int) (getTopDistance(0) + slideOffset * mSlideRange);
-
         if (mDragHelper.smoothSlideViewTo(mSlidableView, mSlidableView.getLeft(), y)) {
             setAllChildrenVisible();
             ViewCompat.postInvalidateOnAnimation(this);
             return true;
         }
+
         return false;
     }
 
@@ -854,9 +854,6 @@ public class SlidingUpPanelLayout extends ViewGroup {
                         mPanelSlideListener.onPanelCollapsed(getDraggerView());
                     }
                 }
-
-                sendAccessibilityEvent(AccessibilityEvent.TYPE_WINDOW_STATE_CHANGED);
-                requestLayout();
             }
         }
 
