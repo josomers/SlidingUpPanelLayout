@@ -577,7 +577,10 @@ public class SlidingUpPanelLayout extends ViewGroup {
 
                 if (mDragViewHit && !mInterceptPanelEvents) {
                     interceptTap = true;
+                } else if (mTmpRect.contains((int) x, (int) y) && isExpanded()) {
+                    collapse();
                 }
+
                 break;
             }
 
