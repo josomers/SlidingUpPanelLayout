@@ -16,6 +16,7 @@ import android.util.AttributeSet;
 import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.ViewTreeObserver;
 
 public class SlidingUpPanelLayout extends ViewGroup {
     /**
@@ -63,14 +64,14 @@ public class SlidingUpPanelLayout extends ViewGroup {
      */
     private final Paint mCoveredFadePaint = new Paint();
     /**
-     * The size of the shadow in pixels.
-     */
-    private int mShadowHeight;
-    /**
      * Helper class for making the sliding possible, based on support-v4-r13.jar lib.
      */
     private final ViewDragHelper mDragHelper;
     private final Rect mTmpRect = new Rect();
+    /**
+     * The size of the shadow in pixels.
+     */
+    private int mShadowHeight;
     /**
      * The fade color used for the slider. 0 = no fading.
      */
@@ -293,6 +294,24 @@ public class SlidingUpPanelLayout extends ViewGroup {
         invalidate();
     }
 
+    public void setSmoothContentHeight(final int contentHeight) {
+        int mOldContentHeight = ((mContentHeight == DEFAULT_CONTENT_HEIGHT) ? contentHeight : mContentHeight);
+        if (contentHeight > mOldContentHeight) {
+            mContentHeight = contentHeight;
+            expand();
+        } else {
+            smoothSlideTo(1.0f - (1.0f / mContentHeight * contentHeight));
+            getViewTreeObserver().addOnGlobalLayoutListener(new ViewTreeObserver.OnGlobalLayoutListener() {
+                @Override
+                public void onGlobalLayout() {
+                    setContentHeight(contentHeight);
+                    mSlideRange = contentHeight;
+                    getViewTreeObserver().removeGlobalOnLayoutListener(this);
+                }
+            });
+        }
+    }
+
     /**
      * Allow the user to reset the content to the default
      */
@@ -438,12 +457,12 @@ public class SlidingUpPanelLayout extends ViewGroup {
         // First pass. Measure based on child LayoutParams width/height.
         for (int i = 0; i < childCount; i++) {
             final View child = getChildAt(i);
-            final LayoutParams lp = (LayoutParams) child.getLayoutParams();
+            final LayoutParams childLayoutParams = (LayoutParams) child.getLayoutParams();
 
             int height = layoutHeight;
 
             if (i == 1) {
-                lp.slideable = true;
+                childLayoutParams.slideable = true;
                 mSlidableView = child;
                 mCanSlide = true;
             } else {
@@ -451,21 +470,21 @@ public class SlidingUpPanelLayout extends ViewGroup {
             }
 
             int childWidthSpec;
-            if (lp.width == LayoutParams.WRAP_CONTENT) {
+            if (childLayoutParams.width == LayoutParams.WRAP_CONTENT) {
                 childWidthSpec = MeasureSpec.makeMeasureSpec(widthSize, MeasureSpec.AT_MOST);
-            } else if (lp.width == LayoutParams.MATCH_PARENT) {
+            } else if (childLayoutParams.width == LayoutParams.MATCH_PARENT) {
                 childWidthSpec = MeasureSpec.makeMeasureSpec(widthSize, MeasureSpec.EXACTLY);
             } else {
-                childWidthSpec = MeasureSpec.makeMeasureSpec(lp.width, MeasureSpec.EXACTLY);
+                childWidthSpec = MeasureSpec.makeMeasureSpec(childLayoutParams.width, MeasureSpec.EXACTLY);
             }
 
             int childHeightSpec;
-            if (lp.height == LayoutParams.WRAP_CONTENT) {
+            if (childLayoutParams.height == LayoutParams.WRAP_CONTENT) {
                 childHeightSpec = MeasureSpec.makeMeasureSpec(height, MeasureSpec.AT_MOST);
-            } else if (lp.height == LayoutParams.MATCH_PARENT) {
+            } else if (childLayoutParams.height == LayoutParams.MATCH_PARENT) {
                 childHeightSpec = MeasureSpec.makeMeasureSpec(height, MeasureSpec.EXACTLY);
             } else {
-                childHeightSpec = MeasureSpec.makeMeasureSpec(lp.height, MeasureSpec.EXACTLY);
+                childHeightSpec = MeasureSpec.makeMeasureSpec(childLayoutParams.height, MeasureSpec.EXACTLY);
             }
 
             child.measure(childWidthSpec, childHeightSpec);
@@ -807,6 +826,35 @@ public class SlidingUpPanelLayout extends ViewGroup {
         }
     }
 
+    /**
+     * Listener for monitoring events about sliding panes.
+     */
+    public interface PanelSlideListener {
+        /**
+         * Called when a sliding pane's position changes.
+         *
+         * @param panel       The child view that was moved
+         * @param slideOffset The new offset of this sliding pane within its range, from 0-1
+         */
+        public void onPanelSlide(View panel, float slideOffset);
+
+        /**
+         * Called when a sliding pane becomes slid completely collapsed. The pane may or may not
+         * be interactive at this point depending on if it's shown or hidden
+         *
+         * @param panel The child view that was slid to an collapsed position, revealing other panes
+         */
+        public void onPanelCollapsed(View panel);
+
+        /**
+         * Called when a sliding pane becomes slid completely expanded. The pane is now guaranteed
+         * to be interactive. It may now obscure other views in the layout.
+         *
+         * @param panel The child view that was slid to a expanded position
+         */
+        public void onPanelExpanded(View panel);
+    }
+
     private static class LayoutParams extends ViewGroup.MarginLayoutParams {
         private static final int[] ATTRS = new int[]{
                 android.R.attr.layout_weight
@@ -871,7 +919,7 @@ public class SlidingUpPanelLayout extends ViewGroup {
             final int topBound = getTopDistance(0);
             mSlideOffset = (float) (top - topBound) / mSlideRange;
 
-            if (mPanelSlideListener != null) {
+            if (mPanelSlideListener != null && mSlideOffset >= EXPANDED && mSlideOffset <= COLLAPSED) {
                 mPanelSlideListener.onPanelSlide(getDraggerView(), mSlideOffset);
             }
 
@@ -901,30 +949,5 @@ public class SlidingUpPanelLayout extends ViewGroup {
             return Math.min(Math.max(top, topBound), bottomBound);
         }
 
-    }
-
-    /**
-     * Listener for monitoring events about sliding panes.
-     */
-    public interface PanelSlideListener {
-        /**
-         * Called when a sliding pane's position changes.
-         * @param panel The child view that was moved
-         * @param slideOffset The new offset of this sliding pane within its range, from 0-1
-         */
-        public void onPanelSlide(View panel, float slideOffset);
-        /**
-         * Called when a sliding pane becomes slid completely collapsed. The pane may or may not
-         * be interactive at this point depending on if it's shown or hidden
-         * @param panel The child view that was slid to an collapsed position, revealing other panes
-         */
-        public void onPanelCollapsed(View panel);
-
-        /**
-         * Called when a sliding pane becomes slid completely expanded. The pane is now guaranteed
-         * to be interactive. It may now obscure other views in the layout.
-         * @param panel The child view that was slid to a expanded position
-         */
-        public void onPanelExpanded(View panel);
     }
 }
