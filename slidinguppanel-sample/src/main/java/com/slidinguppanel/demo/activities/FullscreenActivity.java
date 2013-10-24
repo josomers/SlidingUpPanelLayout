@@ -18,8 +18,6 @@ import com.slidinguppanel.demo.R;
  */
 public class FullscreenActivity extends Activity {
 
-    private SlidingUpPanelLayout slidingUpPanelLayout;
-
     @TargetApi(Build.VERSION_CODES.HONEYCOMB)
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -32,7 +30,7 @@ public class FullscreenActivity extends Activity {
             getActionBar().setDisplayHomeAsUpEnabled(true);
         }
 
-        slidingUpPanelLayout = (SlidingUpPanelLayout) findViewById(R.id.slidinguppanel);
+        final SlidingUpPanelLayout slidingUpPanelLayout = (SlidingUpPanelLayout) findViewById(R.id.slidinguppanel);
         slidingUpPanelLayout.setInterceptingPanelEvents(true);
         slidingUpPanelLayout.setDraggerHeight(getResources().getDimensionPixelSize(R.dimen.panel_height_full));
         slidingUpPanelLayout.setShadowDrawable(getResources().getDrawable(R.drawable.above_shadow));

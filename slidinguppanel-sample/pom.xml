@@ -14,56 +14,55 @@
     <artifactId>slidinguppanel-sample</artifactId>
     <packaging>apk</packaging>
     <name>SlidingUpPanel - Sample</name>
-    <description>Sample application with a different implementations of the SlidingUpPanelLayout
-    </description>
+    <description>Sample application with a different implementations of the SlidingUpPanelLayout</description>
 
     <dependencies>
         <dependency>
             <groupId>junit</groupId>
             <artifactId>junit</artifactId>
         </dependency>
+
         <dependency>
             <groupId>org.robolectric</groupId>
             <artifactId>robolectric</artifactId>
         </dependency>
+
         <dependency>
             <groupId>com.google.android</groupId>
             <artifactId>android</artifactId>
             <scope>provided</scope>
         </dependency>
+
         <dependency>
             <groupId>com.slidinguppanel</groupId>
             <artifactId>slidinguppanel</artifactId>
             <version>${project.version}</version>
             <type>apklib</type>
         </dependency>
-        <dependency>
-            <groupId>de.akquinet.android.androlog</groupId>
-            <artifactId>androlog</artifactId>
-        </dependency>
+
     </dependencies>
 
-	<build>
-		<plugins>
-		    <plugin>
-				<artifactId>maven-compiler-plugin</artifactId>
-				<inherited>true</inherited>
-				<configuration>
-					<source>${java.version}</source>
-					<target>${java.version}</target>
-				</configuration>
-			</plugin>
-			<plugin>
-				<groupId>com.jayway.maven.plugins.android.generation2</groupId>
-				<artifactId>android-maven-plugin</artifactId>
-				<extensions>true</extensions>
-				<configuration>
-					<sdk>
-						<platform>${android.platform}</platform>
-					</sdk>
-				</configuration>
-			</plugin>
-		</plugins>
-	</build>
+    <build>
+        <plugins>
+            <plugin>
+                <artifactId>maven-compiler-plugin</artifactId>
+                <inherited>true</inherited>
+                <configuration>
+                    <source>${java.version}</source>
+                    <target>${java.version}</target>
+                </configuration>
+            </plugin>
+            <plugin>
+                <groupId>com.jayway.maven.plugins.android.generation2</groupId>
+                <artifactId>android-maven-plugin</artifactId>
+                <extensions>true</extensions>
+                <configuration>
+                    <sdk>
+                        <platform>${android.platform}</platform>
+                    </sdk>
+                </configuration>
+            </plugin>
+        </plugins>
+    </build>
 
 </project>
