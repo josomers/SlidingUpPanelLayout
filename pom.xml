@@ -19,8 +19,8 @@
 
     <scm>
         <url>https://github.com/josomers/SlidingUpPanelLayout.git</url>
-        <connection>scm:git:git@github.com:josomers/SlidingUpPanelLayout.git</connection>
-        <developerConnection>scm:git:git@github.com:josomers/SlidingUpPanelLayout.git</developerConnection>
+        <connection>scm:git:git@github.com:josomers/AndroidSlidingUpPanel.git</connection>
+        <developerConnection>scm:git:git@github.com:josomers/AndroidSlidingUpPanel.git</developerConnection>
     </scm>
 
     <developers>
