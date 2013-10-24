@@ -2,7 +2,7 @@ Android Sliding Up Panel
 =========================
 
 
-![SlidingUpPanelLayout](https://raw.github.com/josomers/SlidingUpPanelLayout/dev/slidinguppanel.png)
+![SlidingUpPanelLayout](https://raw.github.com/josomers/SlidingUpPanelLayout/master/slidinguppanel.png)
 
 Usage
 -----------
