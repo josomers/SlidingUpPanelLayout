@@ -17,6 +17,7 @@
     <description>Sample application with a different implementations of the SlidingUpPanelLayout</description>
 
     <dependencies>
+
         <dependency>
             <groupId>junit</groupId>
             <artifactId>junit</artifactId>

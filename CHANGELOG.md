@@ -1,7 +1,7 @@
 Change Log
 ==========
 
-Version 1.1 *(2013-07-23)*
+Version 1.1 *(2013-10-24)*
 ----------------------------
 
  * Added Maven support with a sample and library module which makes it easy to test
